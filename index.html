@@ -81,7 +81,15 @@
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-38C2HP5YCE"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-38C2HP5YCE');</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-38C2HP5YCE', {
+    'send_page_view': true,
+    'anonymize_ip': true
+  });
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Press+Start+2P&display=swap" rel="stylesheet"/>
 
@@ -970,6 +978,7 @@ textarea { min-height: 150px; resize: vertical; }
 /* ══ THEME ══ */
 const root = document.documentElement;
 let sfxOn = localStorage.getItem('sfx') !== 'off';
+
 // Default to dark theme, but respect user preference if they've changed it
 if (localStorage.getItem('theme') === 'light') {
   root.classList.remove('dark');
@@ -1015,9 +1024,104 @@ function toast(msg) {
   clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = '0', 2000);
 }
 
+/* ══ PAGE TRACKING ══ */
+(function initTracking() {
+  // Track page view with timestamp
+  const pageData = {
+    url: window.location.href,
+    title: document.title,
+    referrer: document.referrer || 'direct',
+    timestamp: new Date().toISOString(),
+    screenSize: `${window.innerWidth}x${window.innerHeight}`,
+    userAgent: navigator.userAgent
+  };
+  
+  // Send to Google Analytics as event
+  gtag('event', 'page_view_details', pageData);
+  
+  // Track time on page
+  let startTime = Date.now();
+  let maxScroll = 0;
+  let hasTrackedExit = false;
+  
+  // Track scroll depth
+  function trackScroll() {
+    const winHeight = window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight - winHeight;
+    const scrollPercent = Math.floor((window.scrollY / docHeight) * 100);
+    
+    if (scrollPercent > maxScroll) {
+      maxScroll = scrollPercent;
+      
+      // Track at 25%, 50%, 75%, 90%, 100%
+      if ([25, 50, 75, 90, 100].includes(maxScroll)) {
+        gtag('event', 'scroll_depth', {
+          'event_category': 'Engagement',
+          'event_label': `${maxScroll}%`,
+          'value': maxScroll
+        });
+      }
+    }
+  }
+  
+  window.addEventListener('scroll', trackScroll);
+  
+  // Track outbound links
+  document.querySelectorAll('a[href^="http"]:not([href*="' + window.location.hostname + '"])').forEach(link => {
+    link.addEventListener('click', function(e) {
+      gtag('event', 'outbound_click', {
+        'event_category': 'Engagement',
+        'event_label': this.href,
+        'transport_type': 'beacon'
+      });
+    });
+  });
+  
+  // Track CTA clicks
+  document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .section-link').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      gtag('event', 'cta_click', {
+        'event_category': 'Conversion',
+        'event_label': this.textContent.trim() || 'CTA click',
+        'transport_type': 'beacon'
+      });
+    });
+  });
+  
+  // Track form field interactions
+  document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea').forEach(field => {
+    field.addEventListener('focus', function() {
+      gtag('event', 'form_interaction', {
+        'event_category': 'Engagement',
+        'event_label': `focused_${this.name || this.id}`
+      });
+    });
+  });
+  
+  // Track when user leaves page
+  window.addEventListener('beforeunload', function() {
+    if (!hasTrackedExit) {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+      gtag('event', 'time_on_page', {
+        'event_category': 'Engagement',
+        'event_label': `${timeSpent} seconds`,
+        'value': timeSpent
+      });
+      hasTrackedExit = true;
+    }
+  });
+})();
+
 /* ══ CONTACT FORM ══ */
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
+  
+  // Track form submission attempt
+  gtag('event', 'form_submission_attempt', {
+    'event_category': 'Conversion',
+    'event_label': 'contact_form'
+  });
+  
   const btn = this.querySelector('button[type=submit]');
   const orig = btn.textContent;
   btn.textContent = 'Sending…'; btn.disabled = true; btn.style.opacity = '.7';
@@ -1027,18 +1131,36 @@ document.getElementById('contactForm').addEventListener('submit', async function
       headers: { 'Accept': 'application/json' }
     });
     if (res.ok) {
+      // Track successful submission
+      gtag('event', 'form_submission_success', {
+        'event_category': 'Conversion',
+        'event_label': 'contact_form'
+      });
+      
       btn.textContent = 'Sent ✓'; btn.style.background = 'var(--green)'; btn.style.opacity = '1';
       this.reset();
       toast('📨 Sent! I\'ll reply within 24 hours.');
       sfx('open');
       setTimeout(() => { btn.textContent = orig; btn.style.background = 'var(--blue)'; btn.disabled = false; }, 5000);
     } else {
+      // Track failed submission
+      gtag('event', 'form_submission_failed', {
+        'event_category': 'Conversion',
+        'event_label': 'contact_form'
+      });
+      
       const data = await res.json();
       const msg = data?.errors?.map(e=>e.message).join(', ') || 'Submission failed';
       btn.textContent = 'Try again'; btn.style.opacity = '1'; btn.disabled = false;
       toast('⚠️ ' + msg + ' — or email me directly.');
     }
   } catch(_) {
+    // Track network error
+    gtag('event', 'form_submission_error', {
+      'event_category': 'Conversion',
+      'event_label': 'network_error'
+    });
+    
     btn.textContent = 'Try again'; btn.style.opacity = '1'; btn.disabled = false;
     toast('⚠️ Network error — email asmultitaskcollective@gmail.com directly.');
   }
@@ -1046,7 +1168,6 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
 /* ══ MISC ══ */
 document.getElementById('year').textContent = new Date().getFullYear();
-
 
 })();
 </script>
