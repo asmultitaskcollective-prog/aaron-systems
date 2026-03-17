@@ -278,7 +278,7 @@ textarea{min-height:148px;resize:vertical}
 .callout{background:var(--green-light);border-left:3px solid var(--green);padding:1rem 1.15rem;border-radius:0 12px 12px 0;margin:.85rem 0;font-size:.86rem;color:var(--text-light);line-height:1.7}
 /* footer */
 .footer{padding:3rem 0 4rem;color:var(--muted);font-size:.75rem}
-.footer-line{border-top:1px solid var(--border);padding-top:1.25rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--font-mono);letter-spacing:.02em}
+.footer-line{border-top:1px solid var(--border);padding-top:1.25rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--font-mono);letter-spacing:.02em;width:min(var(--max),calc(100% - 2.5rem));margin:0 auto}
 .quick-anchor{position:fixed;right:20px;bottom:20px;z-index:300;display:inline-flex;align-items:center;gap:.4rem;padding:.72rem .9rem;border-radius:999px;font-family:var(--font-mono);font-size:.72rem;background:var(--surface);color:var(--text-light);border:1px solid var(--border);box-shadow:var(--shadow);transition:.15s;letter-spacing:.02em}
 .quick-anchor:hover{color:var(--blue);border-color:var(--blue)}
 
@@ -416,6 +416,8 @@ textarea{min-height:148px;resize:vertical}
       <a href="#notes">Notes</a>
       <a href="#resources">Resources</a>
       <a href="#contact">Contact</a>
+      <!-- ASMC_LINK_PLACEHOLDER: replace href with ASMC site URL when live -->
+      <a href="#" title="AS Multi-Task Collective — coming soon" style="opacity:.45;cursor:default" aria-label="ASMC site coming soon">ASMC ↗</a>
       <button id="sfxToggle" type="button">🔊 sfx</button>
       <button id="themeToggle" type="button">🌓 theme</button>
       <a href="#contact" class="nav-cta">Book free audit →</a>
@@ -686,10 +688,31 @@ textarea{min-height:148px;resize:vertical}
     </div>
   </section>
 
+  <!-- ── ASMC BRIDGE PLACEHOLDER ── -->
+  <!-- ASMC_SECTION_PLACEHOLDER: uncomment and fill in when ASMC site is live -->
+  <!--
+  <section style="padding:1.5rem 0">
+    <div class="shell">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;box-shadow:var(--shadow-sm)">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem">Built on a system</div>
+          <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--text);margin-bottom:.3rem">AS Multi-Task Collective</div>
+          <div style="font-size:.84rem;color:var(--text-light);max-width:48ch">The operational system behind the work. Training, deployment, and scalable ops infrastructure.</div>
+        </div>
+        <a href="ASMC_URL_HERE" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.45rem;background:var(--surface);color:var(--text);border:1px solid var(--border);padding:.75rem 1.2rem;border-radius:999px;font-family:var(--font-mono);font-size:.76rem;box-shadow:var(--shadow-sm);white-space:nowrap;flex-shrink:0">Explore ASMC ↗</a>
+      </div>
+    </div>
+  </section>
+  -->
+
   <footer class="footer">
-    <div class="footer-line">
+    <div class="footer-line shell">
       <div>© <span id="year"></span> Aaron Suarez · systems support for founders · <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted)" id="konamiHint">double-click copyright to unlock something</span></div>
-      <div style="font-family:var(--font-mono)">Valencia City, PH · remote-first</div>
+      <div style="font-family:var(--font-mono);display:flex;gap:1.5rem;align-items:center">
+        <span>Valencia City, PH · remote-first</span>
+        <!-- ASMC_FOOTER_PLACEHOLDER: replace # with ASMC site URL when live -->
+        <a href="#" style="color:var(--muted);opacity:.5;cursor:default;font-size:.72rem" title="AS Multi-Task Collective — coming soon">ASMC ↗</a>
+      </div>
     </div>
   </footer>
 </main>
