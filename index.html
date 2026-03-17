@@ -970,7 +970,17 @@ textarea { min-height: 150px; resize: vertical; }
 /* ══ THEME ══ */
 const root = document.documentElement;
 let sfxOn = localStorage.getItem('sfx') !== 'off';
-if (localStorage.getItem('theme') === 'dark') root.classList.add('dark');
+// Default to dark theme, but respect user preference if they've changed it
+if (localStorage.getItem('theme') === 'light') {
+  root.classList.remove('dark');
+} else {
+  // If no preference stored OR preference is dark, default to dark
+  root.classList.add('dark');
+  // Store the default preference if not set
+  if (!localStorage.getItem('theme')) {
+    localStorage.setItem('theme', 'dark');
+  }
+}
 
 function sfx(type) {
   if (!sfxOn) return;
