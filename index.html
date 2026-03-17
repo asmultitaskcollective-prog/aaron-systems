@@ -145,7 +145,23 @@ section{padding:3.5rem 0;scroll-margin-top:88px}
 .note-card{display:flex;flex-direction:column;height:100%}
 .note-card .excerpt{flex:1}
 
-/* ── NOTEBOOK LAUNCH BUTTON ── */
+/* ── HERO CTA BAND ── */
+.hero-cta-band{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-top:1.4rem;padding:1.4rem 1.8rem;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-2) 100%);border-radius:22px;box-shadow:0 8px 28px rgba(16,96,160,.28)}
+.hero-cta-band-text{display:flex;flex-direction:column;gap:.35rem}
+.hero-cta-band-text strong{font-size:1rem;color:#fff;font-weight:600}
+.hero-cta-band-text span{font-size:.84rem;color:rgba(255,255,255,.82);line-height:1.6;max-width:56ch}
+.hero-cta-band .btn-primary{background:#fff;color:var(--blue);border-color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.15);font-weight:700}
+.hero-cta-band .btn-primary:hover{background:rgba(255,255,255,.92);transform:translateY(-2px)}
+
+/* ── FEATURED NOTE ── */
+.featured-note{background:linear-gradient(135deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:22px;padding:1.6rem;margin-bottom:1.25rem;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:center;cursor:pointer;transition:.18s ease}
+.featured-note:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-left-color:var(--blue-2)}
+.featured-note-label{font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin-bottom:.5rem}
+.featured-note h3{font-family:var(--font-serif);font-size:1.25rem;color:var(--text);line-height:1.25;margin-bottom:.5rem}
+.featured-note p{font-size:.87rem;color:var(--text-light);line-height:1.65;margin-bottom:.75rem}
+.featured-note-meta{font-family:var(--font-mono);font-size:.66rem;color:var(--muted)}
+.featured-note-arrow{font-size:1.5rem;color:var(--blue);opacity:.5;flex-shrink:0}
+@media(max-width:640px){.featured-note{grid-template-columns:1fr}.featured-note-arrow{display:none}}
 .nb-launch{
   display:inline-flex;align-items:center;gap:.55rem;
   padding:.9rem 1.3rem;border-radius:16px;
@@ -336,7 +352,7 @@ textarea{min-height:150px;resize:vertical}
       <a href="#contact">Contact</a>
       <button id="sfxToggle" type="button">🔊 sfx</button>
       <button id="themeToggle" type="button">🌓 theme</button>
-      <a href="#contact" class="nav-cta">Book ops audit →</a>
+      <a href="#contact" class="nav-cta">Book free audit →</a>
     </nav>
   </div>
 </div>
@@ -351,13 +367,13 @@ textarea{min-height:150px;resize:vertical}
           <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
           <span>aaron.systems / index</span>
         </div>
-        <h1>hi — i'm <em>Aaron</em>. I build systems that make messy work easier to run.</h1>
-        <p class="lead">I help founders and growing teams clean up CRM structure, workflow automation, documentation, and operational handoffs so execution stops routing back to the same people.</p>
-        <p class="sublead">Best fit for teams dealing with messy workflows, undocumented logic, slow handoffs, weak onboarding, CRM sprawl, and operations that depend too heavily on tribal knowledge.</p>
+        <h1>Most growing businesses outrun their own structure. <em>I fix that.</em></h1>
+        <p class="lead">CRM, workflows, documentation, and operations that run without everything routing back to you — built for founders who are ready to stop firefighting.</p>
+        <p class="sublead">Best fit if your tools exist but aren't working together, your team runs on tribal knowledge, or execution keeps stalling in the same places.</p>
         <div class="hero-ctas">
-          <a class="btn-primary" href="#systems">→ Explore systems work</a>
-          <button class="btn-secondary" id="openNotebookBtn">📔 Open the notebook</button>
-          <a class="btn-secondary" href="#contact">📨 Contact me</a>
+          <a class="btn-primary" href="#contact">→ Book a free 30-min ops audit</a>
+          <button class="btn-secondary" id="openNotebookBtn">📔 Read the notes</button>
+          <a class="btn-secondary" href="#systems">See the work</a>
         </div>
         <div class="tag-cloud">
           <span class="tag">CRM architecture</span>
@@ -405,6 +421,15 @@ textarea{min-height:150px;resize:vertical}
       <div class="proof-card"><strong>98%</strong><span>field data capture compliance on estimator workflow automation</span></div>
       <div class="proof-card"><strong>10+</strong><span>payment processors reverse-engineered into searchable decision trees</span></div>
       <div class="proof-card"><strong>150+</strong><span>operational data fields tracked across GHL SMB client builds</span></div>
+    </div>
+
+    <!-- ── HERO CTA BAND ── -->
+    <div class="hero-cta-band">
+      <div class="hero-cta-band-text">
+        <strong>Not sure where to start?</strong>
+        <span>A free 30-minute ops audit will tell you exactly where the drag is and what to fix first. No pitch. No deck. Just a clear look at what's actually broken.</span>
+      </div>
+      <a class="btn-primary" href="#contact" style="white-space:nowrap;flex-shrink:0">Book the audit →</a>
     </div>
   </section>
 
@@ -490,6 +515,16 @@ textarea{min-height:150px;resize:vertical}
       </div>
       <a class="section-link" href="#contact">Want this thinking applied to your business? →</a>
     </div>
+    <div class="featured-note" onclick="openNoteAt(0)" id="featuredNote">
+      <div>
+        <div class="featured-note-label">⚙️ Systems · Featured · Mar 2026</div>
+        <h3>Stop Training People. Start Building Systems That Set Them Free.</h3>
+        <p>When teams keep asking the same questions, the issue is rarely memory. It's the environment around the work — and environments can be redesigned.</p>
+        <div class="featured-note-meta">8 min read · 1,400 words</div>
+      </div>
+      <div class="featured-note-arrow">→</div>
+    </div>
+
     <div class="grid-3" id="notes-preview-grid"></div>
   </section>
 
@@ -527,8 +562,8 @@ textarea{min-height:150px;resize:vertical}
     <div class="section-head">
       <div>
         <div class="eyebrow">📨 Contact</div>
-        <h2>Tell me what feels messy.</h2>
-        <p>Best starting point: tell me where execution gets stuck, what keeps routing back to leadership, what your tools are supposed to be doing, and what you want off your plate first.</p>
+        <h2>Book a free 30-min ops audit.</h2>
+        <p>No pitch, no deck. Tell me where execution gets stuck, what keeps routing back to you, and what you want off your plate first. I'll tell you exactly what I'd look at.</p>
       </div>
     </div>
     <div class="contact-wrap">
@@ -569,6 +604,19 @@ textarea{min-height:150px;resize:vertical}
           </form>
         </div>
       </div>
+    </div>
+  </section>
+
+  <div class="section-divider shell"></div>
+
+  <!-- ── BOTTOM CTA ── -->
+  <section style="padding:2.5rem 0">
+    <div class="hero-cta-band">
+      <div class="hero-cta-band-text">
+        <strong>Ready to stop firefighting?</strong>
+        <span>Book a free 30-minute ops audit. I'll map exactly where your operation is losing time and what to fix first.</span>
+      </div>
+      <a class="btn-primary" href="#contact" style="white-space:nowrap;flex-shrink:0">Book the audit →</a>
     </div>
   </section>
 
