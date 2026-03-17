@@ -1024,11 +1024,14 @@ function toast(msg) {
   clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = '0', 2000);
 }
 
-/* ══ PAGE TRACKING ══ */
+/* ══ PAGE TRACKING with SECTION HASH TRACKING ══ */
 (function initTracking() {
   // Track page view with timestamp
   const pageData = {
     url: window.location.href,
+    path: window.location.pathname,
+    hash: window.location.hash || '(none)',
+    section: getCurrentSection(),
     title: document.title,
     referrer: document.referrer || 'direct',
     timestamp: new Date().toISOString(),
@@ -1036,13 +1039,163 @@ function toast(msg) {
     userAgent: navigator.userAgent
   };
   
-  // Send to Google Analytics as event
-  gtag('event', 'page_view_details', pageData);
+  // Send initial page view with section data
+  gtag('event', 'page_view', {
+    'event_category': 'Page',
+    'event_label': pageData.section,
+    'page_location': pageData.url,
+    'page_title': pageData.title,
+    'section': pageData.section
+  });
   
-  // Track time on page
+  // Track initial viewport section
+  trackVisibleSection();
+  
   let startTime = Date.now();
   let maxScroll = 0;
   let hasTrackedExit = false;
+  let lastTrackedSection = '';
+  let sectionViewTimers = {};
+  let currentVisibleSection = '';
+  
+  // Helper function to get current section from hash
+  function getCurrentSection() {
+    const hash = window.location.hash;
+    if (!hash || hash === '#top' || hash === '#') return 'hero';
+    return hash.replace('#', '') || 'hero';
+  }
+  
+  // Track section visibility using Intersection Observer
+  const sections = ['hero', 'about', 'systems', 'work', 'resources', 'contact'];
+  const sectionElements = {};
+  
+  sections.forEach(section => {
+    const el = document.getElementById(section);
+    if (el) sectionElements[section] = el;
+  });
+  
+  // Set up intersection observer for section tracking
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const section = entry.target.id;
+      const timeInView = Math.round(entry.intersectionRatio * 100);
+      
+      if (entry.isIntersecting) {
+        // Section became visible
+        currentVisibleSection = section;
+        
+        // Track section view start
+        gtag('event', 'section_view', {
+          'event_category': 'Section',
+          'event_label': section,
+          'non_interaction': true
+        });
+        
+        // Start timer for this section
+        if (!sectionViewTimers[section]) {
+          sectionViewTimers[section] = {
+            startTime: Date.now(),
+            totalTime: 0
+          };
+        }
+        
+        // Track visibility percentage
+        gtag('event', 'section_visibility', {
+          'event_category': 'Section',
+          'event_label': section,
+          'value': timeInView,
+          'metric': timeInView
+        });
+        
+      } else {
+        // Section left viewport - calculate time spent
+        if (sectionViewTimers[section] && sectionViewTimers[section].startTime) {
+          const timeSpent = Math.round((Date.now() - sectionViewTimers[section].startTime) / 1000);
+          sectionViewTimers[section].totalTime += timeSpent;
+          sectionViewTimers[section].startTime = null;
+          
+          // Track if spent meaningful time (>3 seconds)
+          if (timeSpent > 3) {
+            gtag('event', 'section_engagement', {
+              'event_category': 'Section',
+              'event_label': section,
+              'value': timeSpent,
+              'metric': timeSpent
+            });
+          }
+        }
+      }
+    });
+  }, {
+    threshold: [0, 0.25, 0.5, 0.75, 1],
+    rootMargin: '0px'
+  });
+  
+  // Observe all sections
+  Object.values(sectionElements).forEach(el => {
+    if (el) observer.observe(el);
+  });
+  
+  // Track hash changes
+  window.addEventListener('hashchange', function() {
+    const newSection = getCurrentSection();
+    
+    gtag('event', 'section_navigation', {
+      'event_category': 'Navigation',
+      'event_label': newSection,
+      'previous_section': lastTrackedSection || 'hero'
+    });
+    
+    lastTrackedSection = newSection;
+    
+    // Track the navigation action
+    gtag('event', 'page_view', {
+      'event_category': 'Page',
+      'event_label': newSection,
+      'page_location': window.location.href,
+      'section': newSection
+    });
+    
+    sfx('click');
+  });
+  
+  // Track which section is visible on scroll
+  function trackVisibleSection() {
+    const viewportHeight = window.innerHeight;
+    let bestSection = 'hero';
+    let maxVisible = 0;
+    
+    sections.forEach(section => {
+      const el = document.getElementById(section);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+        const visiblePercent = Math.max(0, visibleHeight / rect.height);
+        
+        if (visiblePercent > maxVisible) {
+          maxVisible = visiblePercent;
+          bestSection = section;
+        }
+      }
+    });
+    
+    if (bestSection !== currentVisibleSection) {
+      currentVisibleSection = bestSection;
+      
+      gtag('event', 'section_scroll', {
+        'event_category': 'Scroll',
+        'event_label': bestSection,
+        'non_interaction': true
+      });
+    }
+  }
+  
+  // Throttled scroll tracking
+  let scrollTimeout;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(trackVisibleSection, 200);
+  });
   
   // Track scroll depth
   function trackScroll() {
@@ -1053,12 +1206,13 @@ function toast(msg) {
     if (scrollPercent > maxScroll) {
       maxScroll = scrollPercent;
       
-      // Track at 25%, 50%, 75%, 90%, 100%
+      // Track at key scroll points
       if ([25, 50, 75, 90, 100].includes(maxScroll)) {
         gtag('event', 'scroll_depth', {
           'event_category': 'Engagement',
           'event_label': `${maxScroll}%`,
-          'value': maxScroll
+          'value': maxScroll,
+          'section': currentVisibleSection
         });
       }
     }
@@ -1066,48 +1220,80 @@ function toast(msg) {
   
   window.addEventListener('scroll', trackScroll);
   
-  // Track outbound links
+  // Track outbound links with section context
   document.querySelectorAll('a[href^="http"]:not([href*="' + window.location.hostname + '"])').forEach(link => {
     link.addEventListener('click', function(e) {
       gtag('event', 'outbound_click', {
         'event_category': 'Engagement',
         'event_label': this.href,
+        'section_from': currentVisibleSection,
         'transport_type': 'beacon'
       });
     });
   });
   
-  // Track CTA clicks
+  // Track CTA clicks with section context
   document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .section-link').forEach(btn => {
     btn.addEventListener('click', function(e) {
+      const section = this.closest('section')?.id || currentVisibleSection;
+      
       gtag('event', 'cta_click', {
         'event_category': 'Conversion',
         'event_label': this.textContent.trim() || 'CTA click',
+        'section_from': section,
         'transport_type': 'beacon'
       });
     });
   });
   
-  // Track form field interactions
+  // Track form field interactions with section context
   document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea').forEach(field => {
     field.addEventListener('focus', function() {
       gtag('event', 'form_interaction', {
         'event_category': 'Engagement',
-        'event_label': `focused_${this.name || this.id}`
+        'event_label': `focused_${this.name || this.id}`,
+        'section': 'contact'
       });
     });
   });
   
-  // Track when user leaves page
+  // Track time on page and final section when leaving
   window.addEventListener('beforeunload', function() {
     if (!hasTrackedExit) {
       const timeSpent = Math.round((Date.now() - startTime) / 1000);
-      gtag('event', 'time_on_page', {
-        'event_category': 'Engagement',
-        'event_label': `${timeSpent} seconds`,
-        'value': timeSpent
+      
+      // Stop all section timers
+      sections.forEach(section => {
+        if (sectionViewTimers[section] && sectionViewTimers[section].startTime) {
+          const sectionTime = Math.round((Date.now() - sectionViewTimers[section].startTime) / 1000);
+          sectionViewTimers[section].totalTime += sectionTime;
+        }
       });
+      
+      // Calculate total engaged time (sections with >3 seconds)
+      const engagedSections = sections.filter(s => 
+        sectionViewTimers[s] && sectionViewTimers[s].totalTime > 3
+      ).length;
+      
+      gtag('event', 'session_end', {
+        'event_category': 'Session',
+        'event_label': `${timeSpent} seconds`,
+        'value': timeSpent,
+        'sections_viewed': engagedSections,
+        'last_section': currentVisibleSection
+      });
+      
       hasTrackedExit = true;
+    }
+  });
+  
+  // Track when user returns to page (for single-page sessions)
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      gtag('event', 'session_resume', {
+        'event_category': 'Session',
+        'event_label': currentVisibleSection
+      });
     }
   });
 })();
