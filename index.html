@@ -247,12 +247,12 @@ textarea{min-height:150px;resize:vertical}
       </div>
     </div>
     <nav class="nav">
-      <a href="#what-gets-fixed">Services</a>
+      <a href="#diagnose">Diagnose</a>
+      <a href="#what-gets-fixed">Outcomes</a>
       <a href="#work">Work</a>
-      <a href="#contact">Contact</a>
       <button id="sfxToggle" type="button">🔊 sfx</button>
       <button id="themeToggle" type="button">🌓 theme</button>
-      <a href="#contact" class="nav-cta">Start Fixing This →</a>
+      <a href="#diagnose" class="nav-cta">Start Fixing This →</a>
     </nav>
   </div>
 </div>
@@ -274,15 +274,14 @@ textarea{min-height:150px;resize:vertical}
         <span>asmc / execution mode</span>
       </div>
 
-      <h1>Your systems are broken. <em>Let's fix them.</em></h1>
+      <h1>Fix your CRM, workflows, <em>and operations.</em></h1>
 
-      <p class="lead">CRM that doesn't reflect reality. Workflows that break under pressure. Documentation nobody uses. Operations that depend on specific people to function. These are fixable problems.</p>
-      <p class="sublead">ASMC handles the structural work — CRM cleanup, workflow design, documentation systems, and operational builds that run without constant oversight.</p>
+      <p class="lead">Broken CRM structure, workflows that stall under pressure, documentation nobody uses, operations that stop when one person is out. These are structural problems with structural fixes.</p>
+      <p class="sublead">ASMC is the external execution layer — brought in to fix the system, not explain it. If you'd rather hire externally than bring someone in-house, this is where that happens.</p>
 
-      <!-- Single primary CTA — nothing competing with it -->
       <div class="hero-ctas">
-        <a class="btn-primary" href="#contact">Start Fixing This →</a>
-        <a class="btn-secondary" href="#what-gets-fixed">See the work</a>
+        <a class="btn-primary" href="#diagnose">Start Fixing This →</a>
+        <a class="btn-secondary" href="#what-gets-fixed">See outcomes</a>
       </div>
 
       <!-- Outcome list — what actually changes -->
@@ -330,7 +329,7 @@ textarea{min-height:150px;resize:vertical}
         <div class="panel-head"><span>free ops audit</span><span>30 min</span></div>
         <div class="panel-body">
           <p style="font-size:.84rem;color:var(--text-light);line-height:1.7;margin-bottom:.85rem">Tell me where execution gets stuck. I'll tell you exactly what I'd look at first — no pitch, no deck, no obligation.</p>
-          <a class="btn-primary" href="#contact" style="width:100%;justify-content:center;display:flex">Book the Audit →</a>
+          <a class="btn-primary" href="#diagnose" style="width:100%;justify-content:center;display:flex">Book the Audit →</a>
           <p style="font-size:.7rem;color:var(--muted);margin-top:.65rem;text-align:center;font-family:var(--font-mono)">free · 30 min · no pitch</p>
         </div>
       </div>
@@ -348,67 +347,138 @@ textarea{min-height:150px;resize:vertical}
       <strong>Ready to stop firefighting?</strong>
       <span>Free 30-minute ops audit. I'll map exactly where your operation is losing time and what to fix first. No pitch. No deck.</span>
     </div>
-    <a class="btn-primary" href="#contact" style="white-space:nowrap;flex-shrink:0">Request a Systems Audit →</a>
+    <a class="btn-primary" href="#diagnose" style="white-space:nowrap;flex-shrink:0">Request a Systems Audit →</a>
   </div>
 </section>
 
 <div class="section-divider shell"></div>
 
-<!-- ══════════════════════════════════════════════════
-     WHAT GETS FIXED
-     Clear services with outcome framing.
-     Each card = one fixable problem.
-══════════════════════════════════════════════════ -->
+<!-- ══ DIAGNOSTIC FORM — directly under hero per spec ══ -->
+<section id="diagnose" class="shell" style="padding:3rem 0">
+  <div class="section-head" style="margin-bottom:1.4rem">
+    <div>
+      <div class="eyebrow">Diagnose</div>
+      <h2>Tell me what's breaking.</h2>
+      <p>Free 30-minute ops audit. No pitch, no deck. Tell me where execution stalls and I'll tell you what I'd fix first.</p>
+    </div>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-box">
+      <div class="panel-head"><span>intake · quick context</span><span>start here</span></div>
+      <div class="inner">
+        <p style="color:var(--text-light);font-size:.88rem;line-height:1.75">Most useful when the business already has momentum but the operating layer is lagging — same problems keep recurring, execution stalls in the same places, or tools exist but don't connect.</p>
+        <div class="meta-row" style="margin-top:.82rem">
+          <span class="meta-pill">founders</span>
+          <span class="meta-pill">growing teams</span>
+          <span class="meta-pill">service businesses</span>
+          <span class="meta-pill">ops-heavy environments</span>
+        </div>
+        <div class="callout">If you'd rather bring in external help than hire someone in-house — this is where that happens. Free 30-min audit to start.</div>
+        <div class="contact-list">
+          <a href="mailto:asmultitaskcollective@gmail.com">
+            <strong>Email</strong>
+            <span>asmultitaskcollective@gmail.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/suarez-aaronroy/" target="_blank" rel="noopener">
+            <strong>LinkedIn</strong>
+            <span>Connect or message directly</span>
+          </a>
+          <div>
+            <strong>Good first message</strong>
+            <span>"Here's where it breaks, here's what we use, here's what needs fixing."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-wrap">
+      <div class="panel-head"><span>diagnostic intake</span><span>form</span></div>
+      <div class="inner">
+        <form id="diagnoseForm">
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"/>
+          <div class="field">
+            <label for="d-name">Name</label>
+            <input id="d-name" name="name" type="text" placeholder="Your name" required/>
+          </div>
+          <div class="field">
+            <label for="d-email">Email</label>
+            <input id="d-email" name="email" type="email" placeholder="you@company.com" required/>
+          </div>
+          <div class="field">
+            <label for="d-tools">Tools you're using</label>
+            <input id="d-tools" name="tools" type="text" placeholder="CRM, docs, automation tools…"/>
+          </div>
+          <div class="field">
+            <label for="d-need">What needs fixing?</label>
+            <select id="d-need" name="need">
+              <option>CRM cleanup / structure</option>
+              <option>Workflow automation</option>
+              <option>Documentation / SOP / knowledge base</option>
+              <option>General operations cleanup</option>
+              <option>GoHighLevel setup or rebuild</option>
+              <option>Not sure yet — need the audit first</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="d-message">Where does it keep breaking?</label>
+            <textarea id="d-message" name="message" placeholder="What feels messy? Where does execution stall? What keeps routing back to you?" required></textarea>
+          </div>
+          <button class="btn-primary" type="submit" id="diagnoseSubmit" style="width:100%;justify-content:center">Start Fixing This →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider shell"></div>
+
+<!-- ══ OUTCOMES — services framed as results only ══ -->
 <section id="what-gets-fixed" class="shell">
   <div class="section-head">
     <div>
-      <div class="eyebrow">Services</div>
-      <h2>What gets fixed, and how.</h2>
-      <p>Three categories of operational work. Each one targets a specific failure pattern.</p>
+      <div class="eyebrow">Outcomes</div>
+      <h2>What changes after the work is done.</h2>
+      <p>Three areas. Each one removes a specific operational failure.</p>
     </div>
-    <a class="section-link" href="#contact">Start fixing →</a>
+    <a class="section-link" href="#diagnose">Start the audit →</a>
   </div>
   <div class="grid-3">
     <article class="card">
       <div class="card-body">
-        <div class="card-topline">CRM systems</div>
-        <h3>CRM that reflects how work actually moves.</h3>
-        <p>Not a filing cabinet. A working operational system with stages, ownership, visibility, and next-step logic people can follow without asking.</p>
+        <div class="card-topline">CRM</div>
+        <h3>A CRM people actually trust and use.</h3>
+        <p>Stages that match real workflow states. Fields that mean the same thing across every record. Next actions that are visible without asking.</p>
         <ul>
-          <li>Pipeline and stage design</li>
-          <li>Field logic and status structure</li>
-          <li>Case routing and escalation visibility</li>
-          <li>Cleaner handoffs across teams</li>
+          <li>No more guessing where a record stands</li>
+          <li>Handoffs that don't require a follow-up call</li>
+          <li>Data you can report on without cleaning first</li>
         </ul>
-        <a class="btn-ghost" href="#contact">Fix your CRM →</a>
+        <a class="btn-ghost" href="#diagnose">Diagnose your CRM →</a>
       </div>
     </article>
     <article class="card">
       <div class="card-body">
-        <div class="card-topline">workflow automation</div>
-        <h3>Automation built on stable logic, not tool hype.</h3>
-        <p>Workflows that support real operations: guardrails, fallback handling, enough structure that one failure doesn't take the whole thing down.</p>
+        <div class="card-topline">Workflows</div>
+        <h3>Automation that holds up when things go wrong.</h3>
+        <p>Workflows with fallback paths, exception handling, and enough structure that one failure doesn't take the whole thing down.</p>
         <ul>
-          <li>Workflow mapping before automation</li>
-          <li>Layered automation design</li>
-          <li>Fallback and exception paths</li>
-          <li>Task, alert, and routing logic</li>
+          <li>Failures that surface instead of going silent</li>
+          <li>Edge cases handled, not ignored</li>
+          <li>Logic that survives staff changes</li>
         </ul>
-        <a class="btn-ghost" href="#contact">Fix your workflows →</a>
+        <a class="btn-ghost" href="#diagnose">Diagnose your workflows →</a>
       </div>
     </article>
     <article class="card">
       <div class="card-body">
-        <div class="card-topline">documentation systems</div>
-        <h3>Knowledge that survives without living in one person's head.</h3>
-        <p>SOPs, knowledge bases, decision trees, onboarding support — structures that reduce repeat questions, weak handoffs, and single-point-of-failure dependency.</p>
+        <div class="card-topline">Documentation</div>
+        <h3>Knowledge that doesn't walk out the door.</h3>
+        <p>SOPs, decision trees, and knowledge bases built around how work actually fails — not how it's supposed to work on paper.</p>
         <ul>
-          <li>Knowledge base taxonomy</li>
-          <li>Decision-tree logic</li>
-          <li>Onboarding support systems</li>
-          <li>Repeat-question reduction</li>
+          <li>Fewer repeat questions to senior staff</li>
+          <li>New team members who can move faster</li>
+          <li>Decisions that don't require a person to explain them</li>
         </ul>
-        <a class="btn-ghost" href="#contact">Fix your documentation →</a>
+        <a class="btn-ghost" href="#diagnose">Diagnose your docs →</a>
       </div>
     </article>
   </div>
@@ -486,86 +556,8 @@ textarea{min-height:150px;resize:vertical}
 
 <div class="section-divider shell"></div>
 
-<!-- ══════════════════════════════════════════════════
-     CONTACT
-     This is the conversion point. Direct, no friction.
-     Frame as intake, not inquiry.
-══════════════════════════════════════════════════ -->
-<section id="contact" class="shell">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">Contact</div>
-      <h2>This is where we start fixing your system.</h2>
-      <p>Tell me where execution gets stuck, what keeps routing back to you, and what you need off your plate first. I'll tell you what I'd look at.</p>
-    </div>
-  </div>
-  <div class="contact-wrap">
-    <div class="contact-box">
-      <div class="panel-head"><span>intake · quick context</span><span>start here</span></div>
-      <div class="inner">
-        <p style="color:var(--text-light);font-size:.88rem;line-height:1.75">Most useful when your business already has momentum but the internal operating layer is lagging — or when the same problems keep recurring and you can't get ahead of them.</p>
-        <div class="meta-row" style="margin-top:.82rem">
-          <span class="meta-pill">founders</span>
-          <span class="meta-pill">growing teams</span>
-          <span class="meta-pill">service businesses</span>
-          <span class="meta-pill">ops-heavy environments</span>
-        </div>
-        <div class="callout">Free 30-minute ops audit — tell me what's messy and I'll tell you what I'd fix first. No pitch. No deck.</div>
-        <div class="contact-list">
-          <a href="mailto:asmultitaskcollective@gmail.com">
-            <strong>Email</strong>
-            <span>asmultitaskcollective@gmail.com</span>
-          </a>
-          <a href="https://www.linkedin.com/in/suarez-aaronroy/" target="_blank" rel="noopener">
-            <strong>LinkedIn</strong>
-            <span>Connect or message directly</span>
-          </a>
-          <div>
-            <strong>Good first message</strong>
-            <span>"Here's where the workflow breaks, here's what we already use, here's what we need fixed."</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="contact-form-wrap">
-      <div class="panel-head"><span>start a conversation</span><span>form</span></div>
-      <div class="inner">
-        <form id="contactForm">
-          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"/>
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required/>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@company.com" required/>
-          </div>
-          <div class="field">
-            <label for="tools">Tools you're using</label>
-            <input id="tools" name="tools" type="text" placeholder="CRM, docs, automation tools…"/>
-          </div>
-          <div class="field">
-            <label for="need">What needs fixing?</label>
-            <select id="need" name="need">
-              <option>CRM cleanup / structure</option>
-              <option>Workflow automation</option>
-              <option>Documentation / SOP / knowledge base</option>
-              <option>General operations cleanup</option>
-              <option>Founder support / systems build</option>
-              <option>GoHighLevel setup or rebuild</option>
-              <option>Not sure yet — need the audit first</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="message">Where does it keep breaking?</label>
-            <textarea id="message" name="message" placeholder="What feels messy? Where does execution stall? What keeps routing back to you or the same person?" required></textarea>
-          </div>
-          <button class="btn-primary" type="submit" style="width:100%;justify-content:center">Start Fixing This →</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Kept as anchor target for any legacy links -->
+<section id="contact" style="padding:0;margin:0;height:0;overflow:hidden"></section>
 
 <div class="section-divider shell"></div>
 
@@ -576,7 +568,7 @@ textarea{min-height:150px;resize:vertical}
       <strong>Ready to stop firefighting?</strong>
       <span>Free 30-minute ops audit. I'll map exactly where your operation is losing time and what to fix first.</span>
     </div>
-    <a class="btn-primary" href="#contact" style="white-space:nowrap;flex-shrink:0">Request a Systems Audit →</a>
+    <a class="btn-primary" href="#diagnose" style="white-space:nowrap;flex-shrink:0">Request a Systems Audit →</a>
   </div>
 </section>
 
@@ -616,7 +608,7 @@ function toast(msg){const el=document.getElementById('toast');el.textContent=msg
 /* GA tracking */
 (function initTracking(){
   let startTime=Date.now(),maxScroll=0,currentSection='hero';
-  const sections=['hero','what-gets-fixed','work','contact'];
+  const sections=['hero','diagnose','what-gets-fixed','work'];
   const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){currentSection=e.target.id;gtag('event','section_view',{'event_category':'Section','event_label':e.target.id,'non_interaction':true});}});},{threshold:.25});
   sections.forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el);});
   window.addEventListener('scroll',()=>{const d=document.documentElement.scrollHeight-window.innerHeight;const p=Math.floor((window.scrollY/d)*100);if(p>maxScroll){maxScroll=p;if([25,50,75,90,100].includes(p)){gtag('event','scroll_depth',{'event_category':'Engagement','event_label':p+'%','value':p});}}},{passive:true});
@@ -624,24 +616,26 @@ function toast(msg){const el=document.getElementById('toast');el.textContent=msg
   window.addEventListener('beforeunload',()=>{gtag('event','session_end',{'event_category':'Session','value':Math.round((Date.now()-startTime)/1000),'last_section':currentSection});});
 })();
 
-/* contact form */
-document.getElementById('contactForm').addEventListener('submit',async function(e){
-  e.preventDefault();
-  gtag('event','form_submission_attempt',{'event_category':'Conversion','event_label':'contact_form'});
-  const btn=this.querySelector('button[type=submit]');const orig=btn.textContent;
-  btn.textContent='Sending…';btn.disabled=true;btn.style.opacity='.7';
+/* diagnostic form */
+async function submitForm(formEl,btnEl){
+  const orig=btnEl.textContent;
+  btnEl.textContent='Sending…';btnEl.disabled=true;btnEl.style.opacity='.7';
+  gtag('event','form_submission_attempt',{'event_category':'Conversion','event_label':'diagnostic_form'});
   try{
-    const res=await fetch('https://formspree.io/f/mgonpoly',{method:'POST',body:new FormData(this),headers:{'Accept':'application/json'}});
+    const res=await fetch('https://formspree.io/f/mgonpoly',{method:'POST',body:new FormData(formEl),headers:{'Accept':'application/json'}});
     if(res.ok){
-      gtag('event','form_submission_success',{'event_category':'Conversion','event_label':'contact_form'});
-      btn.textContent='Sent ✓';btn.style.background='var(--green)';btn.style.opacity='1';
-      this.reset();toast('📨 Sent! I\'ll reply within 24 hours.');sfx('open');
-      setTimeout(()=>{btn.textContent=orig;btn.style.background='var(--blue)';btn.disabled=false;},5000);
+      gtag('event','form_submission_success',{'event_category':'Conversion','event_label':'diagnostic_form'});
+      btnEl.textContent='Sent ✓';btnEl.style.background='var(--green)';btnEl.style.opacity='1';
+      formEl.reset();toast('📨 Sent! I\'ll reply within 24 hours.');sfx('open');
+      setTimeout(()=>{btnEl.textContent=orig;btnEl.style.background='var(--blue)';btnEl.disabled=false;},5000);
     }else{
       const data=await res.json();const msg=data?.errors?.map(e=>e.message).join(', ')||'Submission failed';
-      btn.textContent='Try again';btn.style.opacity='1';btn.disabled=false;toast('⚠️ '+msg+' — or email me directly.');
+      btnEl.textContent='Try again';btnEl.style.opacity='1';btnEl.disabled=false;toast('⚠️ '+msg+' — or email me directly.');
     }
-  }catch(_){btn.textContent='Try again';btn.style.opacity='1';btn.disabled=false;toast('⚠️ Network error — email asmultitaskcollective@gmail.com directly.');}
+  }catch(_){btnEl.textContent='Try again';btnEl.style.opacity='1';btnEl.disabled=false;toast('⚠️ Network error — email asmultitaskcollective@gmail.com directly.');}
+}
+document.getElementById('diagnoseForm').addEventListener('submit',function(e){
+  e.preventDefault();submitForm(this,document.getElementById('diagnoseSubmit'));
 });
 
 document.getElementById('year').textContent=new Date().getFullYear();
